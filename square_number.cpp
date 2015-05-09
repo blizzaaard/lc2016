@@ -56,7 +56,7 @@ vector<int> square_number(int n)
 
 int main()
 {
-    int A[] = { 52, 1, 0, 100, 1000, 8237 };
+    int A[] = { 52, 1, 0, 100, 1000, 8237, 300, 100, 8 };
     for (int i = 0; i < sizeof A / sizeof *A; ++i) {
         cout << A[i] << '=';
         print(square_number(A[i]));
