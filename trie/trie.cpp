@@ -44,9 +44,9 @@ class Trie {
         return 0;
     }
 
-    void dump(std::vector< std::pair<std::string, int> > *result,
-              const std::string&                          path,
-              Node                                       *node) const
+    void dumpImp(std::vector< std::pair<std::string, int> > *result,
+                 const std::string&                          path,
+                 Node                                       *node) const
     {
         if (!node) return;
         if (-1 != node->m_value) {
@@ -55,7 +55,7 @@ class Trie {
             result->back().second = node->m_value;
         }
         for (char c = 0; c < node->m_next.size(); ++c) {
-            if (node->m_next[c]) dump(result, path + c, node->m_next[c]);
+            if (node->m_next[c]) dumpImp(result, path + c, node->m_next[c]);
         }
     }
 
@@ -66,7 +66,7 @@ class Trie {
     {
     }
 
-    void set(const std::string& key, int value)
+    void insert(const std::string& key, int value)
     {
         int index = 0, keyLen = key.size();
         Node **pp = &m_root;
@@ -137,7 +137,7 @@ class Trie {
     {
         std::vector< std::pair<std::string, int> > result;
         std::string path;
-        dump(&result, path, m_root);
+        dumpImp(&result, path, m_root);
         return result;
     }
 
@@ -146,29 +146,84 @@ class Trie {
         Node *node = getImp(prefix);
         std::vector< std::pair<std::string, int> > result;
         std::string path(prefix);
-        dump(&result, path, node);
+        dumpImp(&result, path, node);
         return result;
     }
+
+    string uniquePrefix(const std::string& key) const
+    {
+        int prefixIndex = -1;
+        int keyLen = key.size();
+        Node *node = m_root;
+        for (int index = 0; index <= keyLen; ++index) {
+            if (!node) return "";
+            if (index == keyLen) {
+                if (node->m_value < 0) {
+                    // if the key does not exist, return an empty prefix
+                    return "";
+                }
+                for (char c = 0; c < node->m_next.size(); ++c) {
+                    // if the key exists but there are children (the key is a
+                    // prefix of another key), return an empty prefix
+                    if (node->m_next[c]) return "";
+                }
+                return key.substr(0, prefixIndex + 2);
+            }
+            if (0 <= prefixIndex) {
+                if (node->m_value >= 0) {
+                    // reset the index of the prefix when we encounter a key
+                    // that's not the same as the input one, otherwise, the
+                    // prefix would be the shared one between this key and the
+                    // one we want.
+                    prefixIndex = -1;
+            } else {
+                bool unique = true;
+                for (char c = 0; c < node->m_next.size(); ++c) {
+                    if (c != key[index] && node->m_next[c]) unique = false;
+                }
+                if (unique) prefixIndex = index;
+            }
+            node = node->m_next[key[index]];
+        }
+        return "";
+    }
+
 };
 
 int main()
 {
-    Trie trie(256);
-    trie.set("she", 0);
-    trie.set("sells", 1);
-    trie.set("sea", 2);
-    trie.set("shells", 3);
-    trie.set("by", 4);
-    trie.set("the", 5);
-    trie.set("seashore", 6);
+//    {
+//        Trie trie(256);
+//        trie.insert("she", 0);
+//        trie.insert("sells", 1);
+//        trie.insert("sea", 2);
+//        trie.insert("shells", 3);
+//        trie.insert("by", 4);
+//        trie.insert("the", 5);
+//        trie.insert("seashore", 6);
+//
+//        trie.remove("shells");
+//        trie.remove("sells");
+//
+//        print(trie.dump());
+//
+//        print(trie.dump("s"));
+//        print(trie.dump("sz"));
+//    }
+    {
+        Trie trie(256);
+        trie.insert("ab", 0);
+        trie.insert("ac", 1);
+        trie.insert("abc", 2);
+        trie.insert("abcdef", 3);
 
-    trie.remove("shells");
-    trie.remove("sells");
-
-    print(trie.dump());
-
-    print(trie.dump("s"));
-    print(trie.dump("sz"));
+        cout << "abcdef"  << "\t" << trie.uniquePrefix("abcdef")  << endl;
+        cout << "ab"      << "\t" << trie.uniquePrefix("ab")      << endl;
+        cout << "ac"      << "\t" << trie.uniquePrefix("ac")      << endl;
+        cout << "abc"     << "\t" << trie.uniquePrefix("abc")     << endl;
+        cout << "abcdefg" << "\t" << trie.uniquePrefix("abcdefg") << endl;
+        cout << "b"       << "\t" << trie.uniquePrefix("b")       << endl;
+    }
 
     return 0;
 }
