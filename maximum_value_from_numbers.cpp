@@ -4,6 +4,7 @@
 // 1 1 2 1
 // (1 + 1) * (2 + 1) = 6
 
+
 #include <algorithm>
 #include <iostream>
 #include <vector>
@@ -23,8 +24,6 @@ int maximumValue(const vector<int>& nums)
                 opt[i][j] = max(opt[i][j],
                                 max(opt[i][k] * opt[k + 1][j],
                                     opt[i][k] + opt[k + 1][j]));
-//                cout << "opt[" << i << "][" << j << "] = "
-//                     << opt[i][j] << endl;
             }
         }
     }

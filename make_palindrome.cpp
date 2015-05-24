@@ -1,7 +1,7 @@
-#include <vector>
+#include <iostream>
 #include <string>
 #include <unordered_map>
-#include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -45,7 +45,7 @@ vector<string> makePalindrome(const string& str)
         ++hash[str[i]];
     }
 
-    // Check if there's at most one charactor that occurs odd times
+    // Check if there's at most one character that occurs odd times
 
     int index = -1;
     for (int i = 0; i < 256; ++i) {
@@ -57,10 +57,12 @@ vector<string> makePalindrome(const string& str)
 
     if (-1 != index) {
         // There is the centric charactor
+
         hash[index] = 0;
         helper(result, hash, string(1, static_cast<char>(index)));
     } else {
         // There is no centric charactor
+
         helper(result, hash, "");
     }
 
@@ -73,5 +75,6 @@ int main()
     print(makePalindrome("aab"));
     print(makePalindrome("carecra"));
     print(makePalindrome("aabbcc"));
+
     return 0;
 }

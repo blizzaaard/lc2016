@@ -1,3 +1,5 @@
+// Generate numbers from a list of primes
+
 #include <iostream>
 #include <vector>
 
@@ -11,7 +13,10 @@ void print(const vector<int>& result)
     cout << endl;
 }
 
-void helper(vector<int>& result, int value, const vector<int>& primes, int index)
+void helper(vector<int>&       result,
+            int                value,
+            const vector<int>& primes,
+            int                index)
 {
     if (index == primes.size()) return;
     for (int i = index; i < primes.size(); ++i) {

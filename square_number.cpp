@@ -34,9 +34,9 @@ vector<int> square_number(int n)
     opt[0] = 1;
     for (int i = 1; i <= n; ++i) {
         int root = sqrt(i);
-        if (i == root * root) {
+        if (i == root * root) { // 'i' is a square number
             opt[i] = 1;
-        } else {
+        } else { // 'i' is NOT a square number
             for (int k = 1; k <= i / 2; ++k) {
                 if (opt[i] > opt[k] + opt[i - k]) {
                     opt[i] = opt[k] + opt[i - k];

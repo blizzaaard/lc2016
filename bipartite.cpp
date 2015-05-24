@@ -1,7 +1,6 @@
 #include <iostream>
-
-#include <vector>
 #include <list>
+#include <vector>
 
 using namespace std;
 
@@ -9,11 +8,11 @@ class Graph {
 
     vector< list<int> > m_adj;
 
-    void dfs(vector<int>& state, int v)
+    void dfs(vector<int>& state, int v) const
     {
-        for (list<int>::iterator it  = m_adj[v].begin();
-                                 it != m_adj[v].end();
-                               ++it)
+        for (list<int>::const_iterator it  = m_adj[v].begin();
+                                       it != m_adj[v].end();
+                                     ++it)
         {
             if (0 != state[*it]) continue;
             state[*it] = 1 == state[v] ? 2 : 1;
@@ -32,7 +31,7 @@ class Graph {
         m_adj[v].push_back(u);
     }
 
-    void bipartite()
+    void bipartite() const
     {
         vector<int> state(m_adj.size(), 0);
             // 0 - unmarked; 1 - red; 2 - black

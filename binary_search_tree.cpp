@@ -1,3 +1,5 @@
+// insert/remove a node into/from a binary search tree
+
 #include <iostream>
 
 using namespace std;
@@ -8,7 +10,10 @@ struct Node {
     Node *m_left;
     Node *m_right;
 
-    explicit Node(int value) : m_value(value), m_left(0), m_right(0)
+    explicit Node(int value)
+    : m_value(value)
+    , m_left(0)
+    , m_right(0)
     {
     }
 };
@@ -33,14 +38,11 @@ Node *removeMin(Node *node)
     // Remove the min node from the tree rooted at the specified 'node' and
     // return the root of the tree.
     //
-    // NOTE: should not free the min node since we just want to transplant the
-    // min node.
+    // NOTE: do NOT free the min node since we just want to transplant the min
+    // node.
 {
     if (!node) return 0;
-    if (!node->m_left) {
-        Node *right = node->m_right;
-        return right;
-    }
+    if (!node->m_left) return node->m_right;
     node->m_left = removeMin(node->m_left);
     return node;
 }
@@ -87,11 +89,8 @@ int main()
     print(node0); cout << endl;
 
     print(remove(node0, 6)); cout << endl;
-
     print(remove(node0, 1)); cout << endl;
-
     print(remove(node0, 0)); cout << endl;
-
     print(remove(node0, 3)); cout << endl;
 
     return 0;

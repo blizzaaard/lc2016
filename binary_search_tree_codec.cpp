@@ -1,7 +1,8 @@
 // Saving a Binary Search Tree to a File
 //
 // * pre-order traversal
-// * use min and max to make sure that the node are in the correct place.
+// * use min and max to make sure that the nodes are in the correct place.
+
 
 #include <string>
 #include <iostream>
@@ -15,7 +16,10 @@ struct Node {
     Node *m_left;
     Node *m_right;
 
-    explicit Node(int value) : m_value(value), m_left(0), m_right(0)
+    explicit Node(int value)
+    : m_value(value)
+    , m_left(0)
+    , m_right(0)
     {
     }
 };
@@ -66,16 +70,19 @@ int main()
     node2->m_right = node6;
 
     print(node0); cout << endl;
+
+    // encode
+
     ostringstream oss;
     encode(oss, node0);
     cout << oss.str() << endl;
 
+    // decode
+
     istringstream iss(oss.str());
     int next;
     iss >> next;
-    if (iss) {
-        print(decode(0, 0, next, iss)); cout << endl;
-    }
+    if (iss) print(decode(0, 0, next, iss)); cout << endl;
 
     return 0;
 }

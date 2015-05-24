@@ -21,7 +21,7 @@ string encode(const string& input)
         if (input[i] != prev) {
             result += prev;
             result += toString(count);
-            prev = input[i];
+            prev  = input[i];
             count = 1;
         } else {
             ++count;

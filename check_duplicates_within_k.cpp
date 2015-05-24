@@ -5,6 +5,8 @@
 using namespace std;
 
 bool checkDupWithinK(const vector<int>& nums, int k)
+    // Return 'true' if there are duplicated elements with in the range 'k',
+    // and 'false' otherwise.
 {
     unordered_set<int> set;
     for (int i = 0; i < nums.size(); ++i) {

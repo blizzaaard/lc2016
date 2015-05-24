@@ -26,107 +26,108 @@ return: aabbaa
 // |
 // ||
 
-#include <iostream>
 
-#include <unordered_map>
-#include <string>
 #include <cassert>
+#include <iostream>
+#include <string>
+#include <unordered_map>
 
 using namespace std;
 
-// To execute C++, please define "int main()"
-
-string longestSubstringLength(const string& s)
+string longestSubstring(const string& s)
 {
-  unordered_map<char, int> dict;
-  unsigned int left = 0;
-  int maxLength = 0;
-  int numDiff = 0;
+    string result;
 
-  string result;
+    unordered_map<char, int> dict;
+    int maxLength = 0;
+    int numDiff   = 0;
 
-  for (unsigned int right = 0; right < s.size(); ++right) {
-    unordered_map<char, int>::iterator jt = dict.find(s[right]);
-    if (dict.end() == jt) {
-      // extending the window
-      if (1 >= numDiff) {
-        numDiff++;
-        dict.insert(make_pair(s[right], 1));
+    unsigned int left  = 0;
+    unsigned int right = 0;
+
+    while (right < s.size()) {
+        // Extending the window
+
+        unordered_map<char, int>::iterator jt = dict.find(s[right]);
+        if (dict.end() != jt) {
+            // This is a character we've seen before
+
+            ++jt->second;
+        } else {
+            // This is a new character we've never seen before
+
+            if (1 >= numDiff) {
+                ++numDiff;
+                dict.insert(make_pair(s[right], 1));
+            } else {
+                // Since there are already 2 different characters in the
+                // window, now shrink the window.
+
+                while (left <= right) {
+                    unordered_map<char, int>::iterator it = dict.find(s[left]);
+                    ++left;
+                    --it->second;
+                    if (0 == it->second) {
+                        dict.erase(it);
+                        --numDiff;
+                        break;
+                    }
+                }
+                continue;
+            }
+        }
+
+        // Update the maximum length
+
         int length = right - left + 1;
         if (length > maxLength) {
-          maxLength = length;
-          result = s.substr(left, right - left + 1);
+            maxLength = length;
+            result = s.substr(left, right - left + 1);
         }
-      } else {
-          --right;
-        // shrinking the window
-        while (left <= right) {
-          unordered_map<char, int>::iterator it =
-            dict.find(s[left]);
-          ++left;
-          --it->second;
-          if (0 == it->second) {
-            dict.erase(it);
-            --numDiff;
-            break;
-          }
-        }
-      }
-    } else {
-      // same char as previous
-      ++jt->second;
-      int length = right - left + 1;
-      if (length > maxLength) {
-        maxLength = length;
-        result = s.substr(left, right - left + 1);
-      }
+
+        ++right;
     }
-  }
-    
-  return result;
+
+    return result;
 }
 
-int main() {
-  
-  
-  string result = longestSubstringLength("");
-  assert("" == result);
-  cout << "Test Case 1 done" << endl;
-  
-  result = longestSubstringLength("a");
-  assert("a" == result);
-  cout << "Test Case 2 done" << endl;
-  
-  result = longestSubstringLength("aa");
-  assert("aa" == result);
-  cout << "Test Case 3 done" << endl;
-  
-  result = longestSubstringLength("ab");
-  assert("ab" == result);
-  cout << "Test Case 4 done" << endl;
-  
-  result = longestSubstringLength("aab");
-  assert("aab" == result);
-  cout << "Test Case 5 done" << endl;
-  
-  result = longestSubstringLength("aabbaaddc");
-  assert("aabbaa" == result);
-  cout << "Test Case 6 done" << endl;
+int main()
+{
+    string result = longestSubstring("");
+    assert("" == result);
+    cout << "Test Case 1 done" << endl;
 
-  result = longestSubstringLength("xyab");
-  assert("xy" == result);
-  cout << "Test Case 7 done" << endl;
+    result = longestSubstring("a");
+    assert("a" == result);
+    cout << "Test Case 2 done" << endl;
 
-  result = longestSubstringLength("abcdefghiihgjkl");
-  assert("hiih" == result);
-  cout << "Test Case 8 done" << endl;
+    result = longestSubstring("aa");
+    assert("aa" == result);
+    cout << "Test Case 3 done" << endl;
 
-  result = longestSubstringLength("aabbbbbabaaaccbbbbaab");
-  assert("aabbbbbabaaa" == result);
-  cout << "Test Case 9 done" << endl;
+    result = longestSubstring("ab");
+    assert("ab" == result);
+    cout << "Test Case 4 done" << endl;
 
-  return 0;
+    result = longestSubstring("aab");
+    assert("aab" == result);
+    cout << "Test Case 5 done" << endl;
+
+    result = longestSubstring("aabbaaddc");
+    assert("aabbaa" == result);
+    cout << "Test Case 6 done" << endl;
+
+    result = longestSubstring("xyab");
+    assert("xy" == result);
+    cout << "Test Case 7 done" << endl;
+
+    result = longestSubstring("abcdefghiihgjkl");
+    assert("hiih" == result);
+    cout << "Test Case 8 done" << endl;
+
+    result = longestSubstring("aabbbbbabaaaccbbbbaab");
+    assert("aabbbbbabaaa" == result);
+    cout << "Test Case 9 done" << endl;
+
+    return 0;
 }
-
-// abcdefghiihgjkl (hiih)
-// aabbbbbabaaaccbbbbaab (aabbbbbabaaa)

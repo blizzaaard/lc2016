@@ -9,10 +9,11 @@ using namespace std;
 
 struct Node {
 
-    string    m_name;
+    string    m_label;
     list<int> m_adj;
 
-    explicit Node(const string& name) : m_name(name)
+    explicit Node(const string& label)
+    : m_label(label)
     {
     }
 };
@@ -24,7 +25,7 @@ class Graph {
 
     void dumpImp(vector<int>& visited, int id) const
     {
-        cout << name(id) << '(' << id << ')' << endl;
+        cout << label(id) << '(' << id << ')' << endl;
         if (1 == visited[id]) {
             cout << "Cycle detected\t" << endl;
         } else if (0 == visited[id]) {
@@ -65,41 +66,43 @@ class Graph {
     void debug() const
     {
         for (int i = 0; i < m_nodes.size(); ++i) {
-            cout << name(i) << '(' << i << ')' << '\t';
+            cout << label(i) << '(' << i << ')' << '\t';
             for (list<int>::const_iterator
                         it  = m_nodes[i].m_adj.begin();
                         it != m_nodes[i].m_adj.end();
                       ++it)
             {
-                cout << name(*it) << '(' << *it << ')' << ' ';
+                cout << label(*it) << '(' << *it << ')' << ' ';
             }
             cout << endl;
         }
         cout << endl;
     }
 
-    int id(const string& name) const
+    int id(const string& label) const
     {
-        unordered_map<string, int>::const_iterator it = m_ids.find(name);
+        unordered_map<string, int>::const_iterator it = m_ids.find(label);
         if (it == m_ids.end()) {
             return -1;
         }
         return it->second;
     }
 
-    const string& name(int id) const
+    const string& label(int id) const
     {
         assert(id < m_nodes.size());
-        return m_nodes[id].m_name;
+        return m_nodes[id].m_label;
     }
 };
 
 int main()
 {
     Graph g;
+
     g.addEdge("abc", "def");
     g.addEdge("def", "ghi");
     g.addEdge("ghi", "jkl");
     g.dump();
+
     return 0;
 }

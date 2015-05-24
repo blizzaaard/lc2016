@@ -21,8 +21,9 @@ void print(const unordered_set<string>& result)
 
 struct Bucket {
 
-    unordered_set<string> m_set;
-    int                   m_count;
+    unordered_set<string> m_set;   // all the 'key' occurred 'm_count' times
+    int                   m_count; // the number of occurrences of the keys in
+                                   // this bucket
 
     explicit Bucket(const int count)
     : m_count(count)
@@ -30,8 +31,18 @@ struct Bucket {
     }
 };
 
-class Test {
+class HashTable {
     // insert(), remove() and getMostFrequentKey() are all O(1) operation.
+    //
+    //   bucket     bucket     bucket
+    //   +---+      +---+      +---+
+    //   | 1 |----->| 6 |----->| 9 |
+    //   +---+      +---+      +---+
+    //     |          |          |
+    //   (set)      (set)      (set)
+    // keys that  keys that  keys that
+    // occurred   occurred   occurred
+    // once       6 times    9 times
 
     typedef list<Bucket>                                BucketList;
     typedef unordered_map<string, BucketList::iterator> Hash;
@@ -84,7 +95,7 @@ class Test {
             curr->m_set.erase(key);
 
             // Remove the bucket from the bucket list if the bucket contains no
-            // elements anymore.
+            // more elements.
 
             if (curr->m_set.empty()) m_list.erase(curr);
 
@@ -172,29 +183,40 @@ class Test {
 
 int main()
 {
-    Test t;
-    t.insert("abc");
-    t.insert("def");
-    t.insert("abc");
-    t.insert("def");
-    t.insert("abc");
-    t.insert("ghi");
-    t.debug();
-    print(t.getMostFrequentKey());
-    t.remove("def");
-    t.debug();
-    print(t.getMostFrequentKey());
-    t.remove("abc");
-    t.debug();
-    print(t.getMostFrequentKey());
-    t.remove("def");
-    t.remove("ghi");
-    t.debug();
-    print(t.getMostFrequentKey());
-    t.remove("abc");
-    t.remove("abc");
-    t.remove("abc");
-    t.debug();
-    print(t.getMostFrequentKey());
+    HashTable ht;
+
+    ht.insert("abc");
+    ht.insert("def");
+    ht.insert("abc");
+    ht.insert("def");
+    ht.insert("abc");
+    ht.insert("ghi");
+    ht.debug();
+
+    print(ht.getMostFrequentKey());
+
+    ht.remove("def");
+    ht.debug();
+
+    print(ht.getMostFrequentKey());
+
+    ht.remove("abc");
+    ht.debug();
+
+    print(ht.getMostFrequentKey());
+
+    ht.remove("def");
+    ht.remove("ghi");
+    ht.debug();
+
+    print(ht.getMostFrequentKey());
+
+    ht.remove("abc");
+    ht.remove("abc");
+    ht.remove("abc");
+    ht.debug();
+
+    print(ht.getMostFrequentKey());
+
     return 0;
 }

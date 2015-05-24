@@ -24,8 +24,7 @@ int maximumSum(const vector<int>& nums)
     if (n < 3) return opt[n - 1];
 
     for (int i = 2; i < n; ++i) {
-        opt[i] = max(nums[i],
-                     max(nums[i] + opt[i - 2], opt[i - 1]));
+        opt[i] = max(nums[i], max(nums[i] + opt[i - 2], opt[i - 1]));
     }
     return opt[n - 1];
 }
@@ -59,5 +58,6 @@ int main()
         nums.push_back(7);
         cout << maximumSum(nums) << endl;
     }
+
     return 0;
 }

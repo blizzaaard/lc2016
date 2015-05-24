@@ -39,7 +39,7 @@ int schedule(const vector<int>& tasks, int n)
         result.push_back(tasks[i]);
         dict.insert(make_pair(tasks[i], i));
     }
-    print(result);
+
     return result.size();
 }
 

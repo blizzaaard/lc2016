@@ -1,3 +1,13 @@
+// append minimum number of charactors to make a palindrome
+//
+// ab -> aba
+// aba -> aba
+// abab -> ababa
+// cat -> catac
+// baloo -> baloolab
+// banana -> bananab
+
+
 #include <iostream>
 #include <string>
 
@@ -40,5 +50,6 @@ int main()
     cout << makePalindrome("cat") << endl;
     cout << makePalindrome("baloo") << endl;
     cout << makePalindrome("banana") << endl;
+
     return 0;
 }
