@@ -1,7 +1,9 @@
 // Contigious Subarray Sum
 //
-// Given a Array A and a integer K , find if there exist a subarray of A whose
+// Given a Array A and a integer K, find if there exist a subarray of A whose
 // sum = K
+//
+// no negative number. no duplicates?
 
 
 #include <iostream>
