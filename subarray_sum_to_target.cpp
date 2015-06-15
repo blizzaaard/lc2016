@@ -2,6 +2,8 @@
 //
 // Given a Array A containing positive integers and a integer K , find if there
 // exist a subarray of A whose sum = K
+//
+// no duplicates?
 
 
 #include <iostream>
